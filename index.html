@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Marker Options Example</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin=""/>
+
+     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+
+
+   </head>
+   
+   <body>
+
+    <div id = "mapid" style="width: 800px; height: 500px;"></div>
+     
+   
+
+     
+
+      <script>
+
+
+   	    var map = L.map('mapid', {
+        })
+        .setView([-41.2865, 174.7762], 13);
+
+        L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png', {
+          attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        
+        var popup = L.popup({
+        	closeButton: false,
+        	closeOnClick: false
+        });
+
+        var orangeIcon = L.icon({
+        	iconUrl: 'map-marker.svg',
+        	iconsize:[64, 74],
+        	iconAnchor: [32, 74],
+        	popupAnchor: [0, -58]
+        });
+
+        
+        //GeoJson//
+        var geojson =
+        { "type": "FeatureCollection", "features": [ { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ 174.76819038391113, -41.28051555629814 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ 174.78020668029785, -41.3005722154254 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ 174.75720405578613, -41.290060973326 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ 174.78638648986816, -41.261807650073955 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ 174.79042053222656, -41.31108176366843 ] } } ] } 
+
+
+
+      L.geoJSON(geojson, {
+      style : function(feature) {
+        return {
+     	color: '#000',
+        weight: 0.5
+     }
+
+    },
+
+    pointToLayer: function(geoJsonPoint, latlng) {
+     return L.marker(latlng, { 
+	 icon: orangeIcon
+	});
+    },
+
+    onEachFeature: function(feature, layer) {
+	if(feature.geometry.type==='Point') {
+	 layer.bindPopup('hello');
+	}
+
+	
+	}
+
+    }).addTo(map);
+
+       var markerOptions = {
+           title: "MyLocation",
+           clickable: true,
+           draggable: true
+         }
+
+         //Creating a marker
+        var marker = L.marker([-41.2865, 174.7762], markerOptions);
+
+        //Adding marker to the map
+         marker.addTo(map);
+
+        var popup = L.popup()
+        .setLatLng(-41.2865, 174.7762)
+        .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+        .openOn(map);
+
+
+
+      </script>
+   </body>
+   
+</html>
+
